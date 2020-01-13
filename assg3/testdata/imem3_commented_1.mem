@@ -1,0 +1,21 @@
+//Make sure you initiate R0 as 32'h00000000
+
+00000fb3 //ADD R31, R0, R0
+800010b7 //LUI R1, 80001000
+01000137 //LUI R2, 01000000
+01900193 //ADDI R3, R0, 12'd25
+01800213 //ADDI R4, R0, 12'd24
+004182e7 //JALR to Imm+R3 and store in R5. Imm = 4
+02000463 //BEQ R0,R0 to last inst. Offset = (16-6)*4 = 40(0000 0010 1000)
+02521263 //BNE R4, R5 to last inst. Offset = (16-7)*4 = 36(0000 0010 0100) 
+0020ce63 //BLT R1,R2 to instr15. Offset = (15-8)*4 = 28(0000 0001 1100)
+00000e63 //BEQ R0,R0 to last inst. Offset = (16-9)*4 = 28(0000 0001 1100)
+0020f463 //BGEU R1,R2 to instr12. Offset = 8(0000 0000 1000)
+00000a63 //BEQ R0,R0 to last inst. Offset = (16-11)*4 = 20(0000 0001 0100)
+04000393 //ADDI R7,R0, 12'64
+00639663 //BNE R7,R6 to last inst. Offset = (16-13)*4 = 12(0000 0000 1100)
+fc6384e3 //BEQ R7,R6 to instr0. Offset = -14*4 = -56(1 1111 1100 1000)
+fedff36f //JAL to instr10. and store in R6. Offset = (10-15)*4 = -20(1 1111 1111 1111 1110 1100) 
+00100f93 //ADDI R31,R0,1 <FAIL>
+
+//Expected order of pc/iaddr -> 0,4,8,12,16,20,28,32,60,40,48,52,56,0,4,.....
